@@ -14,9 +14,11 @@ app.get('/',(req, res)=>{
 
 const trainingRoutes = require('./routes/trainings');
 const attendanceRoutes = require('./routes/attendances');
+const authRoutes = require ('./routes/authRoutes');
 
 app.use('/api/trainings', trainingRoutes);
 app.use('/api/attendances',attendanceRoutes);
+app.use('/api/auth',authRoutes);  
 
 const PORT = process.env.PORT || 3000;
 
