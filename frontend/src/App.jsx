@@ -1,25 +1,78 @@
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router dom'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Home from './pages/Home'
-import {AuthProvider } from './context/AuthContext'
-import {useAuth} from './context/useAuth'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Home from './pages/Home';
+import CoachDashboard from './pages/CoachDashboard';
+import PlayerDashboard from './pages/PlayerDashboard';
+import RoleRoute from './components/RoleRoutes';
+import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './context/useAuth';
 
-function PrivateRoute ({children}) {
-  const {user} = useAuth()
-  return user ? children: <Navigate to ="/login"/>
+function PublicRoute({ children }) {
+  const { user } = useAuth();
+  if (user) {
+    return <Navigate to={`/${user.role}`} replace />;
+  }
+  return children;
 }
 
-export default function App(){
-  return(
-    <AuthProvider>
-      <BrowserRouter>
-      <Routes>
-        <Route path = "/login" element = {<Login/>}/>
-        <Route path = "/signup" element = {<Signup/>}/>
-        <Route path = "/" element ={<PrivateRoute><Home/></PrivateRoute>}/>
-      </Routes>
-      </BrowserRouter>
-    </AuthProvider>
-  )
+function PrivateRoute({ children }) {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/" replace />;
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <Home />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <Signup />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/coach"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRole="coach">
+                  <CoachDashboard />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/player"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRole="player">
+                  <PlayerDashboard />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }

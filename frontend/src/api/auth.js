@@ -1,16 +1,31 @@
-export async function login(email, password) {
-  const res = await fetch('http://localhost:3000/api/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
+import axiosClient from "./axiosClient";
 
-  if (!res.ok) {
-    throw new Error('Credenciales incorrectas');
+export async function login({ email, password }) {
+  try {
+    const res = await axiosClient.post('/auth/login', { email, password });
+    const data = res.data;
+
+    localStorage.setItem('token', data.token);
+    return {
+      name: data.user.nombre,
+      role: data.user.rol
+    };
+  } catch (error) {
+    throw new Error(error.response?.data?.msg || 'Credenciales incorrectas');
   }
-
-  const data = await res.json();
-  localStorage.setItem('token', data.token);
-  return { name: data.name, role: data.role };
 }
 
+export async function signup({ nombre, email, password, genero, rol }) {
+  try {
+    const res = await axiosClient.post('/auth/register', {
+      nombre,
+      email,
+      password,
+      genero,
+      rol
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.msg || 'Error al registrarse');
+  }
+}
