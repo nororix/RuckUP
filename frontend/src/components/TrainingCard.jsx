@@ -1,18 +1,18 @@
 import React from 'react';
 
 const TrainingCard = ({ training, onEdit, onDelete, showActions, onViewAttendance, userRole }) => {
-  const canViewAttendance = userRole === 'jugador' || userRole === 'entrenador';
+  const canViewAttendance = userRole === 'player' || userRole === 'coach';
 
   return (
     <li className="list-group-item border rounded shadow-sm mb-3">
-      <h2 className="h5 fw-semibold">{training.titulo}</h2>
-      <p><strong>Fecha:</strong> {new Date(training.fecha).toLocaleString()}</p>
-      <p><strong>Duración:</strong> {training.duracion} min</p>
-      <p><strong>Ubicación:</strong> {training.ubicacion}</p>
-      <p><strong>Tipo:</strong> {training.tipo}</p>
-      <p><strong>Categoría:</strong> {training.categoria}</p>
-      <p><strong>Descripción:</strong> {training.descripcion}</p>
-      <p><strong>Creado por:</strong> {training.creadoPor?.nombre}</p>
+      <h2 className="h5 fw-semibold">{training.title}</h2>
+      <p><strong>Fecha:</strong> {new Date(training.date).toLocaleDateString()}</p>
+      <p><strong>Duración:</strong> {training.duration} min</p>
+      <p><strong>Ubicación:</strong> {training.location}</p>
+      <p><strong>Tipo:</strong> {training.type}</p>
+      <p><strong>Categoría:</strong> {training.category}</p>
+      <p><strong>Descripción:</strong> {training.description}</p>
+      {/* <p><strong>Creado por:</strong> {training.createdBy?.name}</p> */}
 
       <div className="mt-3 d-flex gap-2">
         {canViewAttendance && (
@@ -46,3 +46,4 @@ const TrainingCard = ({ training, onEdit, onDelete, showActions, onViewAttendanc
 };
 
 export default TrainingCard;
+

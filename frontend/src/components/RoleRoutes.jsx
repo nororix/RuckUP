@@ -5,15 +5,18 @@ const RoleRoute = ({ children, allowedRole }) => {
   const { user } = useAuth();
 
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" replace />;
   }
 
-if (user.rol !== allowedRole) {
-  return <Navigate to={`/${allowedRole}`} replace />;
-}
-
+  if (user.role !== allowedRole) {
+    return <Navigate to={`/${user.role}`} replace />;
+  }
 
   return children;
 };
 
 export default RoleRoute;
+
+
+
+

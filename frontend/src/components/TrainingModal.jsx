@@ -6,20 +6,15 @@ const TrainingModal = ({ formData, setFormData, onClose, onSubmit }) => {
       role="dialog"
       style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
     >
-      <div
-        className="modal-dialog modal-dialog-centered"
-        role="document"
-      >
+      <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content p-4">
           <h2 className="h5 fw-bold mb-4">Nuevo Entrenamiento</h2>
           <form onSubmit={onSubmit}>
             {[
-              { name: 'titulo', type: 'text', placeholder: 'Título' },
-              { name: 'fecha', type: 'datetime-local', placeholder: 'Fecha' },
-              { name: 'duracion', type: 'number', placeholder: 'Duración (min)' },
-              { name: 'ubicacion', type: 'text', placeholder: 'Ubicación' },
-              { name: 'tipo', type: 'text', placeholder: 'Tipo' },
-              { name: 'categoria', type: 'text', placeholder: 'Categoría' }
+              { name: 'title', type: 'text', placeholder: 'Título' },
+              { name: 'date', type: 'date', placeholder: 'Fecha' },
+              { name: 'duration', type: 'number', placeholder: 'Duración (min)' },
+              { name: 'location', type: 'text', placeholder: 'Ubicación' }
             ].map(({ name, type, placeholder }) => (
               <div className="mb-3" key={name}>
                 <input
@@ -34,10 +29,43 @@ const TrainingModal = ({ formData, setFormData, onClose, onSubmit }) => {
             ))}
 
             <div className="mb-3">
+              <label htmlFor="typeSelect" className="form-label">Tipo</label>
+              <select
+                id="typeSelect"
+                className="form-select"
+                value={formData.type}
+                onChange={e => setFormData({ ...formData, type: e.target.value })}
+                required
+              >
+                <option value="">Selecciona un tipo</option>
+                <option value="fitness">Fitness</option>
+                <option value="contact">Contacto</option>
+                <option value="general movement">Movimiento general</option>
+                <option value="technical">Técnico</option>
+                <option value="other">Otro</option>
+              </select>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="categorySelect" className="form-label">Categoría</label>
+              <select
+                id="categorySelect"
+                className="form-select"
+                value={formData.category}
+                onChange={e => setFormData({ ...formData, category: e.target.value })}
+                required
+              >
+                <option value="">Selecciona una categoría</option>
+                <option value="male">Masculino</option>
+                <option value="female">Femenino</option>
+              </select>
+            </div>
+
+            <div className="mb-3">
               <textarea
                 placeholder="Descripción"
-                value={formData.descripcion}
-                onChange={e => setFormData({ ...formData, descripcion: e.target.value })}
+                value={formData.description}
+                onChange={e => setFormData({ ...formData, description: e.target.value })}
                 className="form-control"
                 rows="3"
                 required
@@ -60,3 +88,6 @@ const TrainingModal = ({ formData, setFormData, onClose, onSubmit }) => {
 };
 
 export default TrainingModal;
+
+
+

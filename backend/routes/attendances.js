@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const attendanceCtrl = require('../controllers/attendance.controller');
+const authMiddleware = require('../middlewares/authMiddleware');
+const roleMiddleware = require('../middlewares/roleMiddleware');
 
 router.post('/', attendanceCtrl.createAttendance);
 router.get('/', attendanceCtrl.getAllAttendances);
-router.get('/jugador/:id', attendanceCtrl.getAttendancesByPlayer);
-router.get('/entrenamiento/:trainingId', attendanceCtrl.getAttendanceByTraining)
+router.get('/player/:id', attendanceCtrl.getAttendancesByPlayer);
+router.get('/training/:trainingId', authMiddleware, roleMiddleware(['coach']), attendanceCtrl.getAttendanceByTraining);
 router.put('/:id', attendanceCtrl.updateAttendance);
 router.delete('/:id', attendanceCtrl.deleteAttendance);
 

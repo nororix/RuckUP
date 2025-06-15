@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAttendanceByTraining, updateAttendance } from '../api/attendance';
-import { useAuth } from '../context/useAuth'; 
+import { useAuth } from '../context/useAuth';
 
 export default function AttendanceModal({ show, onClose, training }) {
   const { user } = useAuth();
@@ -8,19 +8,29 @@ export default function AttendanceModal({ show, onClose, training }) {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
+ // useEffect(() => {
+    //if (show && training) {
+      //setLoading(true);
+      //getAttendanceByTraining(training._id)
+        //.then(data => setAttendances(data))
+        //.catch(err => alert(err.message))
+        //.finally(() => setLoading(false));
+    //}
+  //}, [show, training]);
   useEffect(() => {
-    if (show && training) {
-      setLoading(true);
-      getAttendanceByTraining(training._id)
-        .then(data => setAttendances(data))
-        .catch(err => alert(err.message))
-        .finally(() => setLoading(false));
-    }
-  }, [show, training]);
+  if (show && training?._id) {
+    setLoading(true);
+    getAttendanceByTraining(training._id)
+      .then(data => setAttendances(data))
+      .catch(err => alert(err.message))
+      .finally(() => setLoading(false));
+  }
+}, [show, training?._id]);
+
 
   function toggleAttendance(index) {
     const updated = [...attendances];
-    updated[index].asiste = !updated[index].asiste;
+    updated[index].present = !updated[index].present;  
     setAttendances(updated);
   }
 
@@ -28,7 +38,7 @@ export default function AttendanceModal({ show, onClose, training }) {
     setSaving(true);
     try {
       for (const attendance of attendances) {
-        await updateAttendance(attendance._id, { asiste: attendance.asiste });
+        await updateAttendance(attendance._id, { present: attendance.present });  // Cambiado aquí
       }
       alert('Asistencias guardadas');
       onClose();
@@ -46,7 +56,7 @@ export default function AttendanceModal({ show, onClose, training }) {
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Asistencia: {training.titulo}</h5>
+            <h5 className="modal-title">Asistencia: {training.title}</h5>
             <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
           <div className="modal-body">
@@ -56,14 +66,14 @@ export default function AttendanceModal({ show, onClose, training }) {
               <ul className="list-group">
                 {attendances.map((a, i) => (
                   <li key={a._id} className="list-group-item d-flex justify-content-between align-items-center">
-                    {a.jugador.nombre}
+                    {a.player.name}
                     <input
                       type="checkbox"
-                      checked={a.asiste}
+                      checked={a.present}  
                       onChange={() => toggleAttendance(i)}
                       disabled={
                         saving ||
-                        (user.rol === 'jugador' && user._id !== a.jugador._id)
+                        (user.role === 'player' && user._id !== a.player._id)
                       }
                     />
                   </li>
@@ -84,3 +94,4 @@ export default function AttendanceModal({ show, onClose, training }) {
     </div>
   );
 }
+

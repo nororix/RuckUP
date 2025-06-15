@@ -1,4 +1,6 @@
-const TrainingList = ({ title, trainings, onDelete }) => {
+import TrainingCard from './TrainingCard';
+
+const TrainingList = ({ title, trainings, onDelete, onEdit, onViewAttendance, showActions, userRole}) => {
   return (
     <div className="mt-4">
       <h2 className="h4 mb-3">{title}</h2>
@@ -11,12 +13,15 @@ const TrainingList = ({ title, trainings, onDelete }) => {
               key={training._id}
               className="col-12 col-sm-6 col-md-4 col-lg-3"
             >
-              <TrainingCard
-                training={training}
-                onEdit={() => {}}
-                onDelete={onDelete}
-                showActions
-              />
+            <TrainingCard
+              training={training}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onViewAttendance={onViewAttendance}
+              showActions={showActions}
+              userRole={userRole}
+            />
+
             </div>
           ))}
         </div>

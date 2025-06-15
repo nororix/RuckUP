@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import TrainingList from '../components/TrainingList';
 import TrainingModal from '../components/TrainingModal';
+import { useAuth } from "../context/useAuth";
 import { getTrainings, createTraining, updateTraining, deleteTraining } from '../api/trainings';
+import { getAttendanceByTraining } from '../api/attendance';
 
 const CoachDashboard = () => {
   const [trainings, setTrainings] = useState([]);
@@ -10,18 +12,23 @@ const CoachDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
-    titulo: '', fecha: '', duracion: '', ubicacion: '',
-    tipo: '', categoria: '', descripcion: ''
+    title: '', date: '', duration: '', location: '',
+    type: '', category: '', description: ''
   });
+  const [attendanceList, setAttendanceList] = useState([]);
+  const [selectedTraining, setSelectedTraining] = useState(null);
+  const [showAttendanceModal, setShowAttendanceModal] = useState(false);
+  const { logout } = useAuth();
 
-  const upcomingTrainings = trainings.filter(t => new Date(t.fecha) > new Date());
+
+  const upcomingTrainings = trainings.filter(t => new Date(t.date) > new Date());
 
   const fetchData = async () => {
     try {
       const data = await getTrainings();
       setTrainings(data);
     } catch {
-      setError('Error al cargar entrenamientos.');
+      setError('Error loading trainings.');
     } finally {
       setLoading(false);
     }
@@ -43,13 +50,13 @@ const CoachDashboard = () => {
       }
 
       setFormData({
-        titulo: '', fecha: '', duracion: '', ubicacion: '',
-        tipo: '', categoria: '', descripcion: ''
+        title: '', date: '', duration: '', location: '',
+        type: '', category: '', description: ''
       });
       setEditingId(null);
       setShowModal(false);
     } catch {
-      setError('Error al guardar entrenamiento');
+      setError('Error saving training');
     }
   };
 
@@ -58,60 +65,80 @@ const CoachDashboard = () => {
       await deleteTraining(id);
       setTrainings(prev => prev.filter(t => t._id !== id));
     } catch {
-      setError('Error al eliminar entrenamiento');
+      setError('Error deleting training');
     }
   };
 
   const handleEdit = (training) => {
     setFormData({
-      titulo: training.titulo,
-      fecha: training.fecha,
-      duracion: training.duracion,
-      ubicacion: training.ubicacion,
-      tipo: training.tipo,
-      categoria: training.categoria,
-      descripcion: training.descripcion
+      title: training.title,
+      date: training.date,
+      duration: training.duration,
+      location: training.location,
+      type: training.type,
+      category: training.category,
+      description: training.description
     });
     setEditingId(training._id);
     setShowModal(true);
   };
 
+  const handleViewAttendance = async (training) => {
+    try {
+      const data = await getAttendanceByTraining(training._id);
+      setAttendanceList(data);
+      setSelectedTraining(training);
+      setShowAttendanceModal(true);
+    } catch {
+      setError('Error al cargar la asistencia');
+    }
+  };
+
+
   return (
     <div className="container py-4">
-      <h1 className="mb-4">Dashboard Entrenador</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="mb-0">Coach Dashboard</h1>
+        <button className="btn btn-outline-danger" onClick={logout}>
+          Cerrar sesión
+        </button>
+      </div>
+
       <button
         onClick={() => {
           setShowModal(true);
           setFormData({
-            titulo: '', fecha: '', duracion: '', ubicacion: '',
-            tipo: '', categoria: '', descripcion: ''
+            title: '', date: '', duration: '', location: '',
+            type: '', category: '', description: ''
           });
           setEditingId(null);
         }}
         className="btn btn-success mb-4"
       >
-        Crear Entrenamiento
+        Create Training
       </button>
 
-      {loading && <p>Cargando...</p>}
+      {loading && <p>Loading...</p>}
       {error && <p className="text-danger">{error}</p>}
 
       <TrainingList
-        title="Próximos Entrenamientos"
+        title="Upcoming Trainings"
         trainings={upcomingTrainings}
         onDelete={handleDelete}
         onEdit={handleEdit}
+        onViewAttendance={handleViewAttendance}
         showActions={true}       
-        userRole="entrenador"    
+        userRole="coach"    
       />
 
       <TrainingList
-        title="Todos los Entrenamientos"
+        title="All Trainings"
         trainings={trainings}
         onDelete={handleDelete}
         onEdit={handleEdit}
+        onViewAttendance={handleViewAttendance}
         showActions={true}
-        userRole="entrenador"
+        userRole="coach"
       />
 
       {showModal && (
@@ -126,9 +153,52 @@ const CoachDashboard = () => {
           isEditing={!!editingId} 
         />
       )}
+
+      {showAttendanceModal && (
+        <div className="modal d-block bg-dark bg-opacity-50" tabIndex="-1">
+        <div className="modal-dialog modal-lg">
+        <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">Asistencia - {selectedTraining?.title}</h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setShowAttendanceModal(false)}
+          ></button>
+          </div>
+          <div className="modal-body">
+          {Array.isArray(attendanceList) && attendanceList.length > 0 ? (
+            <ul className="list-group">
+              {attendanceList.map((entry) => (
+                <li
+                  key={entry._id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <span>{entry.player.name}</span>
+                  <span
+                    className={`badge ${
+                      entry.attended ? 'bg-success' : 'bg-secondary'
+                    }`}
+                  >
+                    {entry.attended ? 'Asistió' : 'No asistió'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No hay registros de asistencia.</p>
+          )}
+
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
 
 export default CoachDashboard;
+
 

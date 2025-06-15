@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 
 const trainingSchema = new mongoose.Schema({
-    titulo:{type:String, required: true},
-    descripcion:{type: String},
-    fecha: {type: Date, require: true},
-    duracion:{type: Number},
-    ubicacion: {type: String},
-    tipo:{
+    title: { type: String, required: true },
+    description: { type: String },
+    date: { type: Date, required: true },
+    duration: { type: Number },
+    location: { type: String },
+    type: {
         type: String,
-        enum:['físico','contacto','movimiento general', 'técnico', 'otro'],
-        default: 'otro'
+        enum: ['fitness', 'contact', 'general movement', 'technical', 'other'],
+        default: 'other'
     },
-    categoria:{
+    category: {
         type: String,
-        enum:['masculino','femenino'],
+        enum: ['male', 'female'],
         required: true
     },
-    creadoPor: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
-}, {timestamps: true});
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Training', trainingSchema);

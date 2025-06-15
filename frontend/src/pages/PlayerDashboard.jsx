@@ -9,6 +9,7 @@ const PlayerDashboard = () => {
   const [trainings, setTrainings] = useState([]);
   const [selectedTraining, setSelectedTraining] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const { logout } = useAuth();
 
   useEffect(() => {
     const fetchTrainings = async () => {
@@ -30,7 +31,12 @@ const PlayerDashboard = () => {
 
   return (
     <div className="container py-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
       <h1 className="mb-4">Dashboard Jugador</h1>
+      <button className="btn btn-outline-danger mb-4" onClick={logout}>
+        Cerrar sesión
+      </button>
+    </div>
 
       <ul className="list-group">
         {trainings.map((t) => (
@@ -39,7 +45,7 @@ const PlayerDashboard = () => {
             training={t}
             onViewAttendance={handleViewAttendance}
             showActions={false}
-            userRole={user.rol}
+            userRole={user.role}
           />
         ))}
       </ul>

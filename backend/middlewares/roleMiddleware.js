@@ -1,14 +1,13 @@
-const roleMiddleware = (rolesPermitidos) =>{
-    return(req,res,next) =>{
+const roleMiddleware = (allowedRoles) => {
+    return (req, res, next) => {
         const userRole = req.user?.role;
 
-        if(!userRole){
-            return res.status(401).json({msg: 'No autorizado: rol no encontrado'});
-
+        if (!userRole) {
+            return res.status(401).json({ msg: 'Unauthorized: role not found' });
         }
 
-        if(!rolesPermitidos.includes(userRole)){
-            return res.status(403).json({msg: 'Acceso prohibido: rol no permitido'});
+        if (!allowedRoles.includes(userRole)) {
+            return res.status(403).json({ msg: 'Forbidden: role not allowed' });
         }
 
         next();

@@ -7,9 +7,8 @@ const roleMiddleware = require('../middlewares/roleMiddleware');
 router.get('/', trainingCtrl.getAllTrainings);
 router.get('/:id', trainingCtrl.getTrainingById);
 
-
-router.post('/', authMiddleware, roleMiddleware(['entrenador']), trainingCtrl.createTraining);
-router.put('/:id', authMiddleware, roleMiddleware(['entrenador']),trainingCtrl.updateTraining);
-router.delete('/:id', authMiddleware, roleMiddleware(['entrenador']),trainingCtrl.deleteTraining);
+router.post('/', authMiddleware, roleMiddleware(['coach']), trainingCtrl.createTraining);
+router.put('/:id', authMiddleware, roleMiddleware(['coach']), trainingCtrl.updateTraining);
+router.delete('/:id', authMiddleware, roleMiddleware(['coach']), trainingCtrl.deleteTraining);
 
 module.exports = router;

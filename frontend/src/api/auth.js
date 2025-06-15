@@ -7,25 +7,26 @@ export async function login({ email, password }) {
 
     localStorage.setItem('token', data.token);
     return {
-      name: data.user.nombre,
-      role: data.user.rol
+      name: data.user.name,
+      role: data.user.role
     };
   } catch (error) {
     throw new Error(error.response?.data?.msg || 'Credenciales incorrectas');
   }
 }
 
-export async function signup({ nombre, email, password, genero, rol }) {
+export async function signup({ name, email, password, gender, role }) {
   try {
     const res = await axiosClient.post('/auth/register', {
-      nombre,
+      name,
       email,
       password,
-      genero,
-      rol
+      gender,
+      role
     });
     return res.data;
   } catch (error) {
     throw new Error(error.response?.data?.msg || 'Error al registrarse');
   }
 }
+
