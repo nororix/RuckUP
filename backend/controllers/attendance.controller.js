@@ -2,7 +2,14 @@ const Attendance = require('../models/attendance');
 
 exports.createAttendance = async (req, res) => {
     try {
-        const attendance = await Attendance.create(req.body);
+        const { training } = req.body;
+
+        const attendance = await Attendance.create({
+            training,
+            player: req.user.id,
+            present: true
+        });
+
         res.status(201).json(attendance);
     } catch (err) {
         res.status(400).json({ error: err.message });

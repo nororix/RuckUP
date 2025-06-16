@@ -1,6 +1,9 @@
+import { useAuth } from '../context/useAuth';
 import TrainingCard from './TrainingCard';
 
-const TrainingList = ({ title, trainings, onDelete, onEdit, onViewAttendance, showActions, userRole}) => {
+const TrainingList = ({ title, trainings, onDelete, onEdit, onViewAttendance, showActions, userRole }) => {
+  const { user } = useAuth(); 
+
   return (
     <div className="mt-4">
       <h2 className="h4 mb-3">{title}</h2>
@@ -13,15 +16,15 @@ const TrainingList = ({ title, trainings, onDelete, onEdit, onViewAttendance, sh
               key={training._id}
               className="col-12 col-sm-6 col-md-4 col-lg-3"
             >
-            <TrainingCard
-              training={training}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onViewAttendance={onViewAttendance}
-              showActions={showActions}
-              userRole={userRole}
-            />
-
+              <TrainingCard
+                training={training}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onViewAttendance={onViewAttendance}
+                showActions={showActions}
+                userRole={userRole}
+                userId={user?._id} 
+              />
             </div>
           ))}
         </div>

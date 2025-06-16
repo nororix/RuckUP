@@ -1,0 +1,11 @@
+.container-auth {
+  background-color: #e9ecef; 
+}
+
+.custom-form {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  min-width: 350px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  padding: 2rem;
+}

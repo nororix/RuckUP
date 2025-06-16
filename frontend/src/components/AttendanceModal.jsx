@@ -7,16 +7,7 @@ export default function AttendanceModal({ show, onClose, training }) {
   const [attendances, setAttendances] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-
- // useEffect(() => {
-    //if (show && training) {
-      //setLoading(true);
-      //getAttendanceByTraining(training._id)
-        //.then(data => setAttendances(data))
-        //.catch(err => alert(err.message))
-        //.finally(() => setLoading(false));
-    //}
-  //}, [show, training]);
+  
   useEffect(() => {
   if (show && training?._id) {
     setLoading(true);
@@ -71,10 +62,7 @@ export default function AttendanceModal({ show, onClose, training }) {
                       type="checkbox"
                       checked={a.present}  
                       onChange={() => toggleAttendance(i)}
-                      disabled={
-                        saving ||
-                        (user.role === 'player' && user._id !== a.player._id)
-                      }
+                      disabled={saving || user.role !== 'coach'}
                     />
                   </li>
                 ))}

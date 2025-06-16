@@ -98,9 +98,9 @@ const CoachDashboard = () => {
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="mb-0">Coach Dashboard</h1>
+        <h1 className="mb-0">¡Bienvenido entrenador!</h1>
         <button className="btn btn-outline-danger" onClick={logout}>
-          Cerrar sesión
+          X
         </button>
       </div>
 
@@ -115,7 +115,7 @@ const CoachDashboard = () => {
         }}
         className="btn btn-success mb-4"
       >
-        Create Training
+        Crear entrenamiento
       </button>
 
       {loading && <p>Loading...</p>}
@@ -177,10 +177,10 @@ const CoachDashboard = () => {
                   <span>{entry.player.name}</span>
                   <span
                     className={`badge ${
-                      entry.attended ? 'bg-success' : 'bg-secondary'
+                      entry.present ? 'bg-success' : 'bg-secondary'
                     }`}
                   >
-                    {entry.attended ? 'Asistió' : 'No asistió'}
+                    {entry.present ? 'Asiste' : 'No asiste'}
                   </span>
                 </li>
               ))}

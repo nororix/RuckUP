@@ -1,18 +1,42 @@
 import axios from "axios";
 
-const BASE_URL = 'api/attendances';
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
-// export async function getAttendanceByTraining(trainingId) {
-//     const res = await axios.get(BASE_URL);
-//     return res.data.filter(a => a.training._id === trainingId);
-// }
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-export async function getAttendanceByTraining(trainingId) {
-  const res = await axios.get(`${BASE_URL}/training/${trainingId}`);
-  return res.data; 
-}
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-export async function updateAttendance(id, updateData) {
-  const res = await axios.put(`${BASE_URL}/${id}`, updateData);
+export const getAttendanceByTraining = async (trainingId) => {
+  const res = await axiosInstance.get(`/attendances/training/${trainingId}`);
   return res.data;
-}
+};
+
+export const confirmAttendance = async (trainingId) => {
+  const res = await axiosInstance.post("/attendances", { training: trainingId });
+  return res.data;
+};
+
+export const cancelAttendance = async (attendanceId) => {
+  const res = await axiosInstance.delete(`/attendances/${attendanceId}`);
+  return res.data;
+};
+
+export const updateAttendance = async (attendanceId, updateData) => {
+  const res = await axiosInstance.put(`/attendances/${attendanceId}`, updateData);
+  return res.data;
+};
+

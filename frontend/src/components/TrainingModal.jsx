@@ -38,7 +38,7 @@ const TrainingModal = ({ formData, setFormData, onClose, onSubmit }) => {
                 required
               >
                 <option value="">Selecciona un tipo</option>
-                <option value="fitness">Fitness</option>
+                <option value="fitness">Físico</option>
                 <option value="contact">Contacto</option>
                 <option value="general movement">Movimiento general</option>
                 <option value="technical">Técnico</option>

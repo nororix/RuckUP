@@ -19,32 +19,35 @@ export default function LoginForm (){
     };
 
     return (
-    <form onSubmit={handleSubmit}>
+    <div className="form-wrapper d-flex justify-content-center">
+    <form onSubmit={handleSubmit} className="custom-form p-4 mt-5 shadow-sm">
         <div className="mb-3">
-            <label>Email</label>
-            <input
-                name="email"
-                className="form-control"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
+        <label>Email</label>
+        <input
+            name="email"
+            className="form-control"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+        />
         </div>
         <div className="mb-3">
-            <label>Contraseña</label>
-            <input
-                name="password"
-                className="form-control"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-      </div>
-      {error && <div className="alert alert-danger">{error}</div>}
-      <button className="btn btn-primary">Entrar</button>
+        <label>Contraseña</label>
+        <input
+            name="password"
+            className="form-control"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+        />
+        </div>
+        {error && <div className="alert alert-danger">{error}</div>}
+        <button className="btn btn-primary w-100">Entrar</button>
     </form>
+    </div>
+
     )
 }
 

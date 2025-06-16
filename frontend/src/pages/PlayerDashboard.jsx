@@ -32,7 +32,7 @@ const PlayerDashboard = () => {
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-      <h1 className="mb-4">Dashboard Jugador</h1>
+      <h1 className="mb-4">¡Bienvenido jugador!</h1>
       <button className="btn btn-outline-danger mb-4" onClick={logout}>
         Cerrar sesión
       </button>
