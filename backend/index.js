@@ -5,7 +5,16 @@ require ('dotenv').config();
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.get('/',(req, res)=>{
@@ -27,7 +36,7 @@ mongoose.connect(process.env.MONGO_URI)
 .then(()=>{
     console.log('Connected to MongoDB Atlas');
     app.listen(PORT, () =>{
-        console.log(`Server listening on http://localhost:${PORT}`);
+        console.log(`Server listening on ${PORT}`);
     });
 })
 
