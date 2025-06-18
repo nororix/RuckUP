@@ -9,3 +9,95 @@
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   padding: 2rem;
 }
+
+/*---BTN---*/
+.custom-btn {
+  background-color: #f9429e;
+  color: white;
+  border: 1px solid #f9429e;;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.custom-btn:hover {
+  background-color: #e03185;
+  transform: translateY(-1px); 
+}
+.custom-btn-outline {
+  background-color: transparent;
+  color: #f9429e;
+  border: 1px solid #f9429e;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.custom-btn-outline:hover {
+  background-color: #f9429e;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-outline-custom {
+  background-color: transparent;
+  border: 1px solid;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.btn-edit{
+  color:#10b981;
+  border-color:#10b981;
+}
+
+.btn-edit:hover{
+  background-color: #10b981;
+  color: #fff;
+}
+
+.btn-delete{
+  color: #ef4444;
+  border-color:#ef4444;
+}
+
+.btn-delete:hover{
+  background-color: #ef4444;
+  color: #fff;
+}
+
+.btn-attendance {
+  color: #3b82f5;
+  border-color:#3b82f5;
+}
+
+.btn-attendance:hover{
+  background-color: #3b82f5;
+  color:#fff;
+}
+
+/*----training card---*/
+.training-card-img img {
+  width: 100%;
+  object-fit: cover;
+  max-height: 200px;
+}
+
+.training-card-body {
+  background-color: #f8f9fa;
+}
+.training-card-body .btn {
+  min-width: 110px;
+  font-size: 0.9rem;
+  padding: 0.4rem 1.1rem;
+  margin-right: 0.8rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.4rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.training-card-body .btn:last-child {
+  margin-right: 0;
+}
+
+.training-card-body .btn:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+

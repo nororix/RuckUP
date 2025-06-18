@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { confirmAttendance, cancelAttendance, getAttendanceByTraining } from '../api/attendance';
+import trainingImage from '../assets/training-default.jpg';
 
 const TrainingCard = ({ training, onEdit, onDelete, showActions, onViewAttendance, userRole, userId }) => {
   const canViewAttendance = userRole === 'player' || userRole === 'coach';
@@ -48,57 +49,67 @@ const TrainingCard = ({ training, onEdit, onDelete, showActions, onViewAttendanc
   }
 
   return (
-    <li className="list-group-item border rounded shadow-sm mb-3">
-      <h2 className="h5 fw-semibold">{training.title}</h2>
-      <p><strong>Fecha:</strong> {new Date(training.date).toLocaleDateString()}</p>
-      <p><strong>Duración:</strong> {training.duration} min</p>
-      <p><strong>Ubicación:</strong> {training.location}</p>
-      <p><strong>Tipo:</strong> {training.type}</p>
-      <p><strong>Categoría:</strong> {training.category}</p>
-      <p><strong>Descripción:</strong> {training.description}</p>
+    <li className="training-card list-group-item border rounded shadow-sm mb-3">
+        <div className="training-card-img">
+          <img
+            src={trainingImage}
+            alt="Entrenamiento"
+            className="img-fluid rounded-top"
+          />
+        </div>
 
-      <div className="mt-3 d-flex gap-2 align-items-center">
-        {userRole === 'player' && (
-          loading ? (
-            <span>Cargando...</span>
-          ) : attendance ? (
-            <button onClick={handleCancel} className="btn btn-warning btn-sm" disabled={loading}>
-              Cancelar asistencia
-            </button>
-          ) : (
-            <button onClick={handleConfirm} className="btn btn-success btn-sm" disabled={loading}>
-              Confirmar asistencia
-            </button>
-          )
-        )}
+        <div className="training-card-body p-4">
+          <h2 className="h5 fw-semibold">{training.title}</h2>
+          <p><strong>Fecha:</strong> {new Date(training.date).toLocaleDateString()}</p>
+          <p><strong>Duración:</strong> {training.duration} min</p>
+          <p><strong>Ubicación:</strong> {training.location}</p>
+          <p><strong>Tipo:</strong> {training.type}</p>
+          <p><strong>Categoría:</strong> {training.category}</p>
+          <p><strong>Descripción:</strong> {training.description}</p>
 
-        {canViewAttendance && (
-          <button
-            onClick={() => onViewAttendance(training)}
-            className="btn btn-info btn-sm"
-          >
-            Asistencia
-          </button>
-        )}
+          <div className="mt-3 d-flex gap-2 flex-wrap align-items-center">
+            {userRole === 'player' && (
+              loading ? (
+                <span>Cargando...</span>
+              ) : attendance ? (
+                <button onClick={handleCancel} className="btn btn-outline-custom btn-delete btn-sm" disabled={loading}>
+                  No voy
+                </button>
+              ) : (
+                <button onClick={handleConfirm} className="btn btn-outline-custom btn-edit btn-sm" disabled={loading}>
+                  ¡Asisto!
+                </button>
+              )
+            )}
 
-        {showActions && (
-          <>
-            <button
-              onClick={() => onEdit(training)}
-              className="btn btn-primary btn-sm"
-            >
-              Editar
-            </button>
-            <button
-              onClick={() => onDelete(training._id)}
-              className="btn btn-danger btn-sm"
-            >
-              Eliminar
-            </button>
-          </>
-        )}
-      </div>
-    </li>
+            {canViewAttendance && (
+              <button
+                onClick={() => onViewAttendance(training)}
+                className="btn btn-outline-custom btn-attendance btn-sm"
+              >
+                Asistencia
+              </button>
+            )}
+
+            {showActions && (
+              <>
+                <button
+                  onClick={() => onEdit(training)}
+                  className="btn btn-outline-custom btn-edit btn-sm"
+                >
+                  Editar
+                </button>
+                <button
+                  onClick={() => onDelete(training._id)}
+                  className="btn btn-outline-custom btn-delete btn-sm"
+                >
+                  Eliminar
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </li>
   );
 };
 

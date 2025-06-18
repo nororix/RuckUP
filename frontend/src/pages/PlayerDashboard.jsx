@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { getTrainings } from '../api/trainings';
 import AttendanceModal from '../components/AttendanceModal';
-import TrainingCard from '../components/TrainingCard';
+import TrainingList from '../components/TrainingList';
 import { useAuth } from '../context/useAuth';
 
 const PlayerDashboard = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [trainings, setTrainings] = useState([]);
   const [selectedTraining, setSelectedTraining] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const { logout } = useAuth();
 
   useEffect(() => {
     const fetchTrainings = async () => {
@@ -29,26 +28,30 @@ const PlayerDashboard = () => {
     setShowModal(true);
   };
 
+  const upcomingTrainings = trainings.filter(t => new Date(t.date) > new Date());
+
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-      <h1 className="mb-4">¡Bienvenido jugador!</h1>
-      <button className="btn btn-outline-danger mb-4" onClick={logout}>
-        Cerrar sesión
-      </button>
-    </div>
+        <h1 className="mb-0">¡Bienvenido jugador!</h1>
+        <button className="btn btn-outline-danger" onClick={logout}>X</button>
+      </div>
 
-      <ul className="list-group">
-        {trainings.map((t) => (
-          <TrainingCard
-            key={t._id}
-            training={t}
-            onViewAttendance={handleViewAttendance}
-            showActions={false}
-            userRole={user.role}
-          />
-        ))}
-      </ul>
+      <TrainingList
+        title="Próximos entrenamientos"
+        trainings={upcomingTrainings}
+        onViewAttendance={handleViewAttendance}
+        showActions={false}
+        userRole={user.role}
+      />
+
+      <TrainingList
+        title="Todos los entrenamientos"
+        trainings={trainings}
+        onViewAttendance={handleViewAttendance}
+        showActions={false}
+        userRole={user.role}
+      />
 
       {showModal && selectedTraining && (
         <AttendanceModal

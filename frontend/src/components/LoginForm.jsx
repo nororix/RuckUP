@@ -44,7 +44,7 @@ export default function LoginForm (){
         />
         </div>
         {error && <div className="alert alert-danger">{error}</div>}
-        <button className="btn btn-primary w-100">Entrar</button>
+        <button className="btn custom-btn w-100">Entrar</button>
     </form>
     </div>
 

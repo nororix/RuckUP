@@ -113,7 +113,7 @@ const CoachDashboard = () => {
           });
           setEditingId(null);
         }}
-        className="btn btn-success mb-4"
+        className="btn custom-btn mb-4"
       >
         Crear entrenamiento
       </button>
@@ -122,7 +122,7 @@ const CoachDashboard = () => {
       {error && <p className="text-danger">{error}</p>}
 
       <TrainingList
-        title="Upcoming Trainings"
+        title="¡Próximos entrenamientos!"
         trainings={upcomingTrainings}
         onDelete={handleDelete}
         onEdit={handleEdit}
@@ -132,7 +132,7 @@ const CoachDashboard = () => {
       />
 
       <TrainingList
-        title="All Trainings"
+        title="Todos los entrenamientos"
         trainings={trainings}
         onDelete={handleDelete}
         onEdit={handleEdit}

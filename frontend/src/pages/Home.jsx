@@ -12,13 +12,13 @@ export default function Home() {
       </p>
       <div>
         <button
-          className="btn btn-primary me-3"
+          className="btn custom-btn me-3"
           onClick={() => navigate('/login')}
         >
           Iniciar Sesión
         </button>
         <button
-          className="btn btn-outline-primary"
+          className="btn custom-btn-outline"
           onClick={() => navigate('/signup')}
         >
           Registrarse

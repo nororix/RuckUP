@@ -85,7 +85,7 @@ export default function SignupForm() {
           </select>
         </div>
         {error && <div className="alert alert-danger">{error}</div>}
-        <button className="btn btn-primary w-100">Registrarse</button>
+        <button className="btn custom-btn w-100">Registrarse</button>
       </form>
     </div>
   );
